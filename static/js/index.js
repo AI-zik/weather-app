@@ -146,18 +146,18 @@ window.addEventListener("load", () => {
     if (!checkCookie("current latitude")) {
         welcomeBody.classList.add("welcome-body-show")
         async function getIPLocation () {
-            const response = await fetch("http://ip-api.com/json/");
+            const response = await fetch("https://ipapi.co/json/");
             return response.json()
         }
 
         //returning weather data based on users IP address
         getIPLocation().then(data => {
-            setCookie("current latitude", data.lat, 30);
-            setCookie("current longitude", data.lon, 30);
-            setCookie("current location", `${data.city}, ${data.regionName? data.regionName + ", " : ""}${data.countryCode}`, 30) 
+            setCookie("current latitude", data.latitude, 30);
+            setCookie("current longitude", data.longitude, 30);
+            setCookie("current location", `${data.city}, ${data.region? data.region + ", " : ""}${data["country_code"]}`, 30) 
             locationIndicator.innerHTML = getCookie("current location")
-            changeData(data.lat, data.lon, today)
-        })
+            changeData(data.latitude, data.longitude, today)
+        }).catch(error => errorHandler(error))
     }
     else {
         //discard the welcome message
